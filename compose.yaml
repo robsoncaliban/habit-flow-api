@@ -1,9 +1,14 @@
 services:
   postgres:
     image: 'postgres:latest'
+    container_name: postgres-db
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_USER: robsoncaliban
+      POSTGRES_PASSWORD: info@1234
+      POSTGRES_DB: habit-flow-database
     ports:
-      - '5432'
+      - "5432:5432"
+    volumes:
+      - habit_flow_postgres:/var/lib/postgresql/data
+volumes:
+  habit_flow_postgres:
