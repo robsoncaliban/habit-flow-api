@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.robsoncaliban.habit_flow_api.entities.Usuario;
 import com.robsoncaliban.habit_flow_api.entities.dtos.request.UsuarioRequestDto;
 import com.robsoncaliban.habit_flow_api.entities.dtos.request.UsuarioUpdateRequestDto;
+import com.robsoncaliban.habit_flow_api.repositories.UsuarioRepository;
 import com.robsoncaliban.habit_flow_api.services.exceptions.DuplicateDataException;
 import com.robsoncaliban.habit_flow_api.services.exceptions.UsuarioNaoEncontradoException;
 import com.robsoncaliban.habit_flow_api.utils.BeanUtilsIgnoreNull;
