@@ -6,9 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.robsoncaliban.habit_flow_api.entities.Usuario;
 import com.robsoncaliban.habit_flow_api.entities.dtos.request.UsuarioRequestDto;
-import com.robsoncaliban.habit_flow_api.entities.dtos.response.UsuarioResponseDto;
-import com.robsoncaliban.habit_flow_api.repositories.UsuarioRepository;
+import com.robsoncaliban.habit_flow_api.entities.dtos.request.UsuarioUpdateRequestDto;
+import com.robsoncaliban.habit_flow_api.services.exceptions.DuplicateDataException;
 import com.robsoncaliban.habit_flow_api.services.exceptions.UsuarioNaoEncontradoException;
+import com.robsoncaliban.habit_flow_api.utils.BeanUtilsIgnoreNull;
 
 @Service
 public class UsuarioService {
@@ -19,12 +20,18 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public UsuarioResponseDto criarUsuario(UsuarioRequestDto usuarioDto){
-        // TODO: fazer regra de negocio 
-        // 01 - verificar se o email é valido atraves do envio de email
-        // 02 - não deixar cadastrar email igual
+    public Usuario criarUsuario(UsuarioRequestDto usuarioDto){
+        if (usuarioRepository.findByEmail(usuarioDto.email()).isPresent()) {
+            throw new DuplicateDataException(usuarioDto.email());
+        }
         var usuarioNovo = new Usuario(usuarioDto.nome(), usuarioDto.senha(), usuarioDto.email());
-        return new UsuarioResponseDto(usuarioRepository.save(usuarioNovo));
+        return usuarioRepository.save(usuarioNovo);
+    }
+
+    public Usuario atualizarUsuario(String email, UsuarioUpdateRequestDto usuarioDto){
+        Usuario usuario = buscarUsuarioPorEmail(email);
+        BeanUtilsIgnoreNull.copyProperties(usuarioDto, usuario);
+        return usuarioRepository.save(usuario);
     }
 
     public Usuario buscarUsuarioPorEmail(String email){
