@@ -1,4 +1,15 @@
 services:
+  habit-flow:
+    stdin_open: true
+    tty: true
+    command: bash
+    build:
+      context: .
+    container_name: habit-flow
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./:/home/habit-flow 
   postgres:
     image: 'postgres:latest'
     container_name: postgres-db
